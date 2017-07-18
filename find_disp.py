@@ -153,6 +153,14 @@ params.add('h4',value= 0,vary=False, min=-0.0005, max=0.0005)
 minner = Minimizer(fcn2min, params, fcn_args=(x, data))
 result = minner.minimize()
 
+datafile = fits.open('extracted_spectra.fits')
+datafile[1].header.append(card=('a',result.params['a'].value))
+datafile[1].header.append(card=('b',result.params['b'].value))
+datafile[1].header.append(card=('c',result.params['c'].value))
+datafile[1].header.append(card=('d',result.params['d'].value))
+datafile[1].header.append(card=('e',result.params['e'].value))
+
+
 
 report_fit(result)
 
@@ -192,6 +200,19 @@ result = minner.minimize()
 
 
 report_fit(result)
+
+
+datafile[3].header.append(card=('a',result.params['a'].value))
+datafile[3].header.append(card=('b',result.params['b'].value))
+datafile[3].header.append(card=('c',result.params['c'].value))
+datafile[3].header.append(card=('d',result.params['d'].value))
+datafile[3].header.append(card=('e',result.params['e'].value))
+
+
+
+
+hdulist = fits.HDUList(datafile)
+hdulist.writeto('calib_disp.fits', clobber=True)
 
 model = np.zeros(N_pix,dtype=np.float)
 print sum(model)

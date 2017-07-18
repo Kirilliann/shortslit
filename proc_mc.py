@@ -84,9 +84,9 @@ for j in [0,1,2]:
         x = p(i)
         reduced_spectra[i,:] = data[i,int(x-18):int(x+18)]
     hdu_ = fits.ImageHDU(data=reduced_spectra)
-    hdu_.header.append(card=('c',res[j][0]))
-    hdu_.header.append(card=('k',res[j][1]))
-    hdu_.header.append(card=('b',res[j][2]))
+    hdu_.header.append(card=('N_poly',len(res[j])))
+    for q in range(len(res[j])):
+        hdu_.header.append(card=('c'+str(q),res[j][q]))
     hdul.append(hdu_)
 hdulist = fits.HDUList(hdul)
 hdulist.writeto('extracted_spectra.fits', clobber=True)
